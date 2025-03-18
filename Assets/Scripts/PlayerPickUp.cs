@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerPickUp : MonoBehaviour
 {
     [SerializeField] float _pickUpRange = 5f;
+    [SerializeField] float _pushStrength = 20f;
     [SerializeField] LayerMask _layerMask;
 
     //UI Elements
@@ -28,6 +29,11 @@ public class PlayerPickUp : MonoBehaviour
         {
             TryPickUpOrDrop();
         }
+        
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            ThrowItem();
+        }
 
         if (_isPicking && _pickedObject != null)
         {
@@ -42,6 +48,15 @@ public class PlayerPickUp : MonoBehaviour
         {
             _pickUpPrompt.gameObject.SetActive(false);
         }
+    }
+
+    void ThrowItem()
+    {
+        if(_isPicking)
+        {
+            _pickedRigidbody.AddForce(transform.forward * _pushStrength);
+            TryPickUpOrDrop();
+        } 
     }
 
     void TryPickUpOrDrop()
